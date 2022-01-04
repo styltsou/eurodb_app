@@ -1,0 +1,23 @@
+version: '3'
+services:
+  node-server:
+    build: 
+      context: .
+      args: 
+        NODE_ENV: development
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_NAME=eurodb
+      - DB_USER=styl
+      - DB_PASSWORD=ndkv32
+    command: npm run dev
+  
+  mysql:
+    environment:
+      - MYSQL_DATABASE=eurodb
+      - MYSQL_USER=styl
+      - MYSQL_PASSWORD=ndkv32
+    
