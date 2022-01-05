@@ -1,4 +1,5 @@
 node_modules
+initdb
 Dockerfile
 docker-compose*
 .dockerignore
@@ -6,3 +7,4 @@ docker-compose*
 .gitignore
 .prettierrc
 .prettierignore
+.husky
