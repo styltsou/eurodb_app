@@ -2,6 +2,7 @@ version: '3'
 services:
   node-server:
     build: .
+    container_name: node-server
     ports:
       - '5000:5000'
     environment:
@@ -11,10 +12,14 @@ services:
     
   mysql:
     image: mysql
+    container_name: mysql-eurodb
+    ports: 
+      - '3306:3306'
     environment:
-      - MYSQL_ROOT_PASSWORD=somesuperstrongpswd
+      - MYSQL_ROOT_PASSWORD=somepassword
     volumes:
       - mysql-db:/data/db
+      - ./initdb:/docker-entrypoint-intdb.d
 
 volumes:
   mysql-db:
