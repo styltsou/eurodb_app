@@ -2,7 +2,9 @@ const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 
-const db = require('./db/connect');
+const countryRouter = require('./routes/countryRouter');
+
+const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
@@ -10,21 +12,12 @@ app.use(express.json());
 app.use(helmet());
 app.use(xss());
 
-// Add rate limit middleware
-app.get('/', async (req, res) => {
-  const query = `select * from alltime_mostwins_view`;
+//NOTE: Add rate limiting middleware
 
-  try {
-    const [rows] = await db.query(query);
+app.get('/', (req, res) => res.send('<h1>Eimai Gkantemoskylo</h1>'));
 
-    res.status(200).json({
-      status: 'success',
-      results: rows.length,
-      data: rows,
-    });
-  } catch (err) {
-    res.send(err);
-  }
-});
+app.use('/api/countries', countryRouter);
+
+app.use(globalErrorHandler);
 
 module.exports = app;

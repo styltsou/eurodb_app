@@ -9,13 +9,6 @@ const pool = mysql.createPool({
   database: DB_NAME,
 });
 
-// pool.connect(err => {
-//   if (err) {
-//     console.log('Error connecting to DB.');
-//     throw err;
-//   }
-
-//   console.log('MySQL connected successfully');
-// });
+//NOTE: Find a way to check if connection was successful
 
 module.exports = pool.promise();
