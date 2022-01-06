@@ -10,14 +10,14 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - DB_NAME=eurodb
+      - DB_NAME=EuroDB
       - DB_USER=admin
       - DB_PASSWORD=ndkv32
     command: npm run dev
   
   mysql:
     environment:
-      - MYSQL_DATABASE=eurodb
+      - MYSQL_DATABASE=EuroDB
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=ndkv32
     
