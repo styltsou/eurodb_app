@@ -4,6 +4,8 @@ services:
     build:
       args:
         NODE_ENV: development
+    environment: 
+      - WDS_SOCKET_PORT=0
     volumes:
       - ./client:/app
       - /app/node_modules
