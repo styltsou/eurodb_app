@@ -8,7 +8,14 @@ RUN if [ "$NODE_ENV" = "development" ]; \
   else npm instal --only=production; \
   fi
 
-COPY . ./
-ENV PORT 5000
+
+RUN chown -R node:node /app/node_modules
+
+#build client if in production
+RUN if ["$NODE_ENV" = "production" ]; \
+  then npm run build; \
+  fi
+
 EXPOSE $PORT
-CMD ["node", "src/server.js"]
+CMD ["npm", "run", "start"]
+

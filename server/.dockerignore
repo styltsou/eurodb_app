@@ -1,0 +1,4 @@
+node_modules
+initdb
+Dockerfile
+.dockerignore

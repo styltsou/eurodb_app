@@ -1,7 +1,20 @@
 version: '3'
 services:
-  node-server:
-    build: .
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    ports: 
+      - '3000:3000'
+    environment:
+      - PORT=3000
+    depends_on: 
+      - api
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     container_name: node-server
     ports:
       - '5000:5000'
@@ -13,13 +26,11 @@ services:
   mysql:
     image: mysql
     container_name: mysql-eurodb
-    ports: 
-      - '3306:3306'
     environment:
       - MYSQL_ROOT_PASSWORD=somepassword
     volumes:
       - mysql-db:/data/db
-      - ./initdb:/docker-entrypoint-initdb.d
+      - ./server/initdb:/docker-entrypoint-initdb.d
 
 volumes:
   mysql-db:

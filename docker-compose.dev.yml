@@ -1,12 +1,19 @@
 version: '3'
 services:
-  node-server:
+  client:
+    build:
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    command: npm run start
+  api:
     build: 
-      context: .
       args: 
         NODE_ENV: development
     volumes:
-      - ./:/app
+      - ./server:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -16,6 +23,8 @@ services:
     command: npm run dev
   
   mysql:
+    ports:
+      - '3306:3306'
     environment:
       - MYSQL_DATABASE=EuroDB
       - MYSQL_USER=admin
