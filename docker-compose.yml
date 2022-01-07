@@ -1,12 +1,20 @@
 version: '3'
 services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx-eurodb
+    ports:
+      - '3050:80'
+    depends_on:
+      - client
+      - api
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
-    container_name: client
-    ports: 
-      - '3000:3000'
+    container_name: client-eurodb
     environment:
       - PORT=3000
     depends_on: 
@@ -15,9 +23,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: node-server
-    ports:
-      - '5000:5000'
+    container_name: api-eurodb
     environment:
       - PORT=5000
     depends_on: 
