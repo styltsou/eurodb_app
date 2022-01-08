@@ -53,6 +53,22 @@ const getTracksAtTopTen = catchAsync(async (req, res, next) => {
   });
 });
 
+const getAllTimeTopTracks = catchAsync(async (req, res, next) => {
+  let query = 'SELECT * FROM alltime_top10tracks_view';
+
+  // Add filter options for this controllers
+  //i.e sortby
+
+  const [rows] = await db.query(query);
+
+  res.status(200).json({
+    status: 'success',
+    results: rows.length,
+    data: rows,
+  });
+});
+
 module.exports = {
   getTracksAtTopTen,
+  getAllTimeTopTracks,
 };

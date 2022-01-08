@@ -7,7 +7,7 @@ function App() {
 
 	useEffect(() => {
 		const testAPI = async () => {
-			const res = await fetch(`/api/contests/2002`);
+			const res = await fetch(`/api/tracks/all-time-top`);
 			const data = await res.json();
 			setTracks(data);
 		};
