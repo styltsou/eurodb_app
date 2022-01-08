@@ -11,7 +11,7 @@ const getContest = catchAsync(async (req, res) => {
 
   //NOTE: Might need to refactor this
   // Maybe throw an error instead?
-  if (contest[0] === null || contest[0] === undefined) {
+  if (contest[0] === undefined) {
     res.status(404).json({ status: 'fail', message: 'No results found' });
     return;
   }
