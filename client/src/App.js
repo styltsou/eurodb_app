@@ -1,17 +1,26 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function App() {
-  useEffect(() => {
-    const testAPI = async () => {
-      const res = await fetch('/api/countries/most-wins');
-      const data = await res.json();
-      console.log(data);
-    };
+	const [tracks, setTracks] = useState("");
 
-    testAPI();
-  }, []);
+	useEffect(() => {
+		const testAPI = async () => {
+			const res = await fetch("/api/tracks/top-10?genre=Folk");
+			const data = await res.json();
+			setTracks(data);
+		};
 
-  return <h1>Learn React</h1>;
+		testAPI();
+	}, []);
+
+	return (
+		<>
+			<h1>Tracks at top 10</h1>
+			<div>
+				<pre>{JSON.stringify(tracks, null, 2)}</pre>
+			</div>
+		</>
+	);
 }
 
 export default App;

@@ -7,6 +7,7 @@ const cors = require('cors');
 const { NODE_ENV } = require('../config/env');
 
 const countryRouter = require('./routes/countryRouter');
+const trackRouter = require('./routes/trackRouter');
 
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -27,15 +28,16 @@ app.get('/api', (req, res) => {
 });
 
 app.use('/api/countries', countryRouter);
+app.use('/api/tracks', trackRouter);
 
 app.use(globalErrorHandler);
 
 if (NODE_ENV === 'production') {
-  // add build routes
-  app.use(express.static(path.resolve(__dirname, '../../client/build')));
+  const CLIENT_BUILD_PATH = path.resolve(__dirname, '../../client/build');
+  app.use(express.static(CLIENT_BUILD_PATH));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../client/build', 'index.html'));
+    res.sendFile(path.resolve(CLIENT_BUILD_PATH, 'index.html'));
   });
 }
 
