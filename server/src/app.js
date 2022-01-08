@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const { NODE_ENV } = require('../config/env');
 
+const contestRouter = require('./routes/contestRouter');
 const countryRouter = require('./routes/countryRouter');
 const trackRouter = require('./routes/trackRouter');
 
@@ -22,11 +23,7 @@ app.use(xss());
 
 //NOTE: Add rate limiting middleware
 
-// Test route
-app.get('/api', (req, res) => {
-  re.json({ data: 'Node API' });
-});
-
+app.use('/api/contests', contestRouter);
 app.use('/api/countries', countryRouter);
 app.use('/api/tracks', trackRouter);
 
