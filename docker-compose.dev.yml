@@ -1,5 +1,8 @@
 version: '3'
 services:
+  nginx:
+    build:
+      dockerfile: Dockerfile.dev
   client:
     build:
       args:
@@ -14,6 +17,8 @@ services:
     build: 
       args: 
         NODE_ENV: development
+    ports: 
+      - '5000:5000'
     volumes:
       - ./server:/app
       - /app/node_modules

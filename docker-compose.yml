@@ -3,8 +3,6 @@ services:
   nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile
-    container_name: nginx-eurodb
     ports:
       - '3050:80'
     depends_on:
