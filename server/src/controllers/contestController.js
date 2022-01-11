@@ -6,8 +6,11 @@ const getAllContests = catchAsync(async (req, res, next) => {});
 const getContest = catchAsync(async (req, res) => {
   const year = req.params.year;
 
-  const contestQuery = 'SELECT * FROM contest WHERE year = ?';
-  const [contest] = await db.query(contestQuery, [year]);
+  const query =
+    'SELECT contest.year, org_country, tv_viewing, num_of_contestants_view.num_contestants, winners_view.winner \
+    FROM contest JOIN num_of_contestants_view JOIN winners_view \
+    ON contest.year = num_of_contestants_view.year AND contest.year = winners_view.year \
+    WHERE contest.year = ?';
 
   //NOTE: Might need to refactor this
   // Maybe throw an error instead?
@@ -16,19 +19,11 @@ const getContest = catchAsync(async (req, res) => {
     return;
   }
 
-  const numContestantsQuery =
-    'SELECT num_contestants FROM num_of_contestants_view WHERE year = ?';
-  const [numContestants] = await db.query(numContestantsQuery, [year]);
-
-  const winnerQuery = 'SELECT winner FROM winners_view WHERE year = ?';
-  const [winner] = await db.query(winnerQuery, [year]);
-
-  contest[0].winner = winner[0].winner;
-  contest[0].num_of_contestants = numContestants[0].num_contestants;
+  const [rows] = await db.query(query, [year]);
 
   res.status(200).json({
     status: 'success',
-    data: contest[0],
+    data: rows,
   });
 });
 

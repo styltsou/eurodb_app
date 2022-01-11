@@ -39,3 +39,4 @@ services:
 
 volumes:
   mysql-db:
+   driver: local

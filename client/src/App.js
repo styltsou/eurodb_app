@@ -7,7 +7,7 @@ function App() {
 
 	useEffect(() => {
 		const testAPI = async () => {
-			const res = await fetch(`/api/tracks/all-time-top`);
+			const res = await fetch(`/api/contests/2014`);
 			const data = await res.json();
 			setTracks(data);
 		};
@@ -17,7 +17,7 @@ function App() {
 
 	return (
 		<>
-			<h1>{genre} tracks at top 10</h1>
+			<h1>Hello</h1>
 			<div>
 				<pre>{JSON.stringify(tracks, null, 2)}</pre>
 			</div>
