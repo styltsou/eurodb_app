@@ -10,6 +10,7 @@ const contestRouter = require('./routes/contestRouter');
 const countryRouter = require('./routes/countryRouter');
 const trackRouter = require('./routes/trackRouter');
 const presenterRouter = require('./routes/presenterRouter');
+const jurorRouter = require('./routes/jurorRouter');
 
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -28,6 +29,7 @@ app.use('/api/contests', contestRouter);
 app.use('/api/countries', countryRouter);
 app.use('/api/tracks', trackRouter);
 app.use('/api/presenters', presenterRouter);
+app.use('/api/jurors', jurorRouter);
 
 app.use(globalErrorHandler);
 

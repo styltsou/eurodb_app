@@ -4,6 +4,8 @@ const router = express.Router();
 
 const trackController = require('../controllers/trackController');
 
+router.get('/:year', trackController.getTracksByYear);
+
 router.get('/top-10', trackController.getTracksAtTopTen);
 
 router.get('/all-time-top', trackController.getAllTimeTopTracks);

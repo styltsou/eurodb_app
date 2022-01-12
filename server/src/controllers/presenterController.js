@@ -1,6 +1,7 @@
 const db = require('../db/connect');
 const catchAsync = require('../utils/catchAsync');
-const prepareUpdateQuery = require('../db/prepareUpdateQuery');
+const { insertQuery, updateQuery } = require('../db/queryFactory');
+const { validateGender } = require('../db/validateEnums');
 
 const getAllPresenters = catchAsync(async (req, res, next) => {
   const query = `SELECT * FROM presenter`;
@@ -30,10 +31,19 @@ const getPresentersByYear = catchAsync(async (req, res, next) => {
 
 // Things break if a add a year that doesn't exist in any row of contest table
 const addPresenter = catchAsync(async (req, res, next) => {
-  const { year, name, gender, date_of_birth } = req.body;
+  const { year, name, gender } = req.body;
 
-  const query = `INSERT INTO presenter 
-                VALUES (${year}, '${name}', '${gender}', '${date_of_birth}')`;
+  if (year === undefined || name === undefined) {
+    throw new Error('Missing field in request body');
+  }
+
+  validateGender(gender);
+
+  const query = insertQuery(
+    'presenter',
+    ['year', 'name', 'gender', 'date_of_birth'],
+    req.body
+  );
 
   const [result] = await db.query(query);
 
@@ -44,12 +54,14 @@ const addPresenter = catchAsync(async (req, res, next) => {
 });
 
 const updatePresenter = catchAsync(async (req, res, next) => {
-  let { year, name } = req.params;
+  let { year, name, gender } = req.params;
+
+  validateGender(gender);
 
   // Format name parameter
   name = name.replace('_', ' ');
 
-  const query = prepareUpdateQuery(
+  const query = updateQuery(
     'presenter',
     ['year', 'name', 'gender', 'date_of_birth'],
     req.body,

@@ -1,6 +1,23 @@
 const db = require('../db/connect');
 const catchAsync = require('../utils/catchAsync');
 
+const getTracksByYear = catchAsync(async (req, res, next) => {
+  const year = req.params.year;
+
+  const query = `SELECT track_name as title, country_name as country, genre, duration, pref_id
+                  FROM track WHERE year = ${year}`;
+
+  const [rows] = await db.query(query);
+
+  // Check for non valid year parameter
+
+  res.status(200).json({
+    status: 'success',
+    results: rows.length,
+    data: rows,
+  });
+});
+
 const getTracksAtTopTen = catchAsync(async (req, res, next) => {
   let query = `SELECT cct.year, country, track.track_name as track, track.genre, place_view.place
                  FROM place_view JOIN cct JOIN track
@@ -69,6 +86,7 @@ const getAllTimeTopTracks = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
+  getTracksByYear,
   getTracksAtTopTen,
   getAllTimeTopTracks,
 };
