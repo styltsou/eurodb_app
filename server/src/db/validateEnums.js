@@ -3,6 +3,17 @@ const validateGender = gender => {
     throw new Error(`${gender} is not valid value for gender`);
 };
 
+const validateGenre = genre => {
+  if (
+    genre !== undefined &&
+    !['Rock', 'Pop', 'Folk', 'Metal', 'Country', 'Soul', 'Electronic'].includes(
+      genre
+    )
+  )
+    throw new Error(`${genre} is not valid value for genre`);
+};
+
 module.exports = {
   validateGender,
+  validateGenre,
 };
