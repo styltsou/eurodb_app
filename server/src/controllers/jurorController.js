@@ -118,10 +118,29 @@ const addJuror = catchAsync(async (req, res, next) => {
 const updateJuror = catchAsync(async (req, res, next) => {
   const id = req.params.id;
 
-  const { gender } = req.body;
+  const { gender, years } = req.body;
   validateGender(gender);
 
-  // TODO: Update contest_has_juror table first
+  // Check if years array is passed as a field in request body
+  if (years) {
+    // Remove already existing years from content_has_juror table
+    const deleteYearsQuery = `DELETE FROM contest_has_juror WHERE Juror_juror_id = ${id}`;
+    const [deleteResult] = await db.query(deleteYearsQuery);
+
+    // Check if years array contains any elements
+    if (years.length) {
+      // Insert new year values in contest_has_juror table
+      let valueLists = [];
+      years.forEach(year => {
+        valueLists.push(`(${year}, ${id})`);
+      });
+
+      const addYearsQuery = `INSERT INTO contest_has_juror (Contest_year, Juror_juror_id)
+      VALUES ${valueLists.join(', ')}`;
+
+      const [yearsResult] = await db.query(addYearsQuery);
+    }
+  }
 
   const query = updateQuery(
     'juror',
