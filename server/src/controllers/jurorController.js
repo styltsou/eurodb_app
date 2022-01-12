@@ -26,9 +26,14 @@ const getJurorsByYear = catchAsync(async (req, res, next) => {
   if (ids) ids = ids.map(el => el['id']);
   else throw new Error('Resource not found');
 
-  const jurorsQuery = `SELECT * FROM juror WHERE juror_id in (${ids.join(
-    ','
-  )})`;
+  let jurorsQuery = `SELECT * FROM juror WHERE juror_id in (${ids.join(',')})`;
+
+  // Filter by country option
+  let { country } = req.query;
+  if (country !== undefined) {
+    country = country.replace('_', ' ');
+    jurorsQuery += ` AND country_name = '${country}'`;
+  }
 
   const [jurors] = await db.query(jurorsQuery);
 
