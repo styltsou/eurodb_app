@@ -17,7 +17,7 @@ function App() {
 
 	return (
 		<>
-			<h1>Hello</h1>
+			<h1>EuroDB</h1>
 			<div>
 				<pre>{JSON.stringify(tracks, null, 2)}</pre>
 			</div>
