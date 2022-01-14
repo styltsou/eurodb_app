@@ -70,6 +70,8 @@ const updatePresenter = catchAsync(async (req, res, next) => {
 
   const [result] = await db.query(query);
 
+  if (result.affectedRows === 0) throw new Error('Resource not found');
+
   res.status(200).json({
     status: 'success',
     data: result,

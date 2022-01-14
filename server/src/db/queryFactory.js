@@ -2,7 +2,7 @@ const insertQuery = (tableName, validInserts, dataObj) => {
   // maybe throw error instead
   Object.keys(dataObj).forEach(key => {
     if (!validInserts.includes(key)) {
-      delete dataObj[key];
+      throw new Error(`'${key}' is not a valid field`);
     }
   });
 
@@ -27,7 +27,7 @@ const updateQuery = (tableName, validUpdates, newDataObj, conditionClause) => {
   // Should I add an error as a response instead?
   Object.keys(newDataObj).forEach(key => {
     if (!validUpdates.includes(key)) {
-      delete newDataObj[key];
+      throw new Error(`'${key}' is not a valid field`);
     }
   });
 

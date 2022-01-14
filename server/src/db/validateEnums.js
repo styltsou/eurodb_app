@@ -1,6 +1,6 @@
 const validateGender = gender => {
   if (gender !== undefined && !['Male', 'Female', 'NonBinary'].includes(gender))
-    throw new Error(`${gender} is not valid value for gender`);
+    throw new Error(`'${gender}' is not valid value for gender`);
 };
 
 const validateGenre = genre => {
@@ -10,7 +10,7 @@ const validateGenre = genre => {
       genre
     )
   )
-    throw new Error(`${genre} is not valid value for genre`);
+    throw new Error(`'${genre}' is not valid value for genre`);
 };
 
 module.exports = {
