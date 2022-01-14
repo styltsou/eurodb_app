@@ -1,8 +1,6 @@
 const db = require('../db/connect');
 const catchAsync = require('../utils/catchAsync');
 
-const getAllContests = catchAsync(async (req, res, next) => {});
-
 const getContest = catchAsync(async (req, res) => {
   const year = req.params.year;
 
@@ -12,22 +10,16 @@ const getContest = catchAsync(async (req, res) => {
     ON contest.year = num_of_contestants_view.year AND contest.year = winners_view.year \
     WHERE contest.year = ?';
 
-  //NOTE: Might need to refactor this
-  // Maybe throw an error instead?
-  if (contest[0] === undefined) {
-    res.status(404).json({ status: 'fail', message: 'No results found' });
-    return;
-  }
+  const [contest] = await db.query(query, [year]);
 
-  const [rows] = await db.query(query, [year]);
+  if (contest[0] === undefined) throw new Error('Resource not found');
 
   res.status(200).json({
     status: 'success',
-    data: rows,
+    data: contest,
   });
 });
 
 module.exports = {
-  getAllContests,
   getContest,
 };
