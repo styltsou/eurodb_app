@@ -3,8 +3,10 @@ const catchAsync = require('../utils/catchAsync');
 const { insertQuery, updateQuery } = require('../db/queryFactory');
 const { validateGender } = require('../db/validateEnums');
 
-const getAllPerformers = catchAsync(async (req, res, next) => {
-  const query = `SELECT * FROM performer`;
+const getPerformersByYear = catchAsync(async (req, res, next) => {
+  const query = `SELECT performer.perf_id, perf_name, country_name, num_of_members, date_of_birth, gender 
+                FROM track JOIN performer
+                ON track.perf_id = performer.perf_id WHERE year = 2014;`;
 
   const [rows] = await db.query(query);
 
@@ -102,7 +104,7 @@ const deletePerformer = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
-  getAllPerformers,
+  getPerformersByYear,
   getPerformer,
   getPerformerTracks,
   addPerformer,

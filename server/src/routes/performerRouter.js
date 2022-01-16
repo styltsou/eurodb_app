@@ -3,10 +3,9 @@ const router = express.Router();
 
 const performerController = require('../controllers/performerController');
 
-router
-  .route('/')
-  .get(performerController.getAllPerformers)
-  .post(performerController.addPerformer);
+router.post('/', performerController.addPerformer);
+
+router.get('/:year', performerController.getPerformersByYear);
 
 router
   .route('/:id')
