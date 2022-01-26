@@ -91,11 +91,11 @@ const addJuror = catchAsync(async (req, res, next) => {
   // Remove years from request body before inserting data to juror
   delete req.body[years];
 
-  const query = insertQuery(
-    'juror',
-    ['juror_name', 'gender', 'date_of_birth', 'country_name'],
-    req.body
-  );
+  const query = insertQuery({
+    table: 'juror',
+    validInserts: ['juror_name', 'gender', 'date_of_birth', 'country_name'],
+    data: req.body,
+  });
 
   const [result] = await db.query(query);
 
@@ -147,12 +147,12 @@ const updateJuror = catchAsync(async (req, res, next) => {
     }
   }
 
-  const query = updateQuery(
-    'juror',
-    ['juror_name', 'gender', 'date_of_birth', 'country_name'],
-    req.body,
-    `juror_id = ${id}`
-  );
+  const query = updateQuery({
+    table: 'juror',
+    validUpdates: ['juror_name', 'gender', 'date_of_birth', 'country_name'],
+    data: req.body,
+    condition: `juror_id = ${id}`,
+  });
 
   const [result] = await db.query(query);
 

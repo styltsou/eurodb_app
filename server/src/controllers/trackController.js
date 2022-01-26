@@ -45,11 +45,18 @@ const addTrack = catchAsync(async (req, res, next) => {
       throw new Error(`${perf_id} is not a valid perf_id value`);
   }
 
-  const query = insertQuery(
-    'track',
-    ['track_name', 'year', 'country_name', 'genre', 'duration', 'perf_id'],
-    req.body
-  );
+  const query = insertQuery({
+    table: 'track',
+    validInserts: [
+      'track_name',
+      'year',
+      'country_name',
+      'genre',
+      'duration',
+      'perf_id',
+    ],
+    data: req.body,
+  });
 
   const [result] = await db.query(query);
 
@@ -71,14 +78,21 @@ const updateTrack = catchAsync(async (req, res, next) => {
       throw new Error(`${perf_id} is not a valid perf_id value`);
   }
 
-  const query = updateQuery(
-    'track',
-    ['track_name', 'year', 'country_name', 'genre', 'duration', 'perf_id'],
-    req.body,
-    `year = ${year}
-   AND country_name = ${country_name} 
-   AND track_name = ${track_name}`
-  );
+  const query = updateQuery({
+    table: 'track',
+    validUpdates: [
+      'track_name',
+      'year',
+      'country_name',
+      'genre',
+      'duration',
+      'perf_id',
+    ],
+    data: req.body,
+    condition: `year = ${year}
+  AND country_name = ${country_name} 
+   AND track_name = ${track_name}`,
+  });
 
   const [result] = await db.query(query);
 

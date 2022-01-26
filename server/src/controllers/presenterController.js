@@ -39,11 +39,11 @@ const addPresenter = catchAsync(async (req, res, next) => {
 
   validateGender(gender);
 
-  const query = insertQuery(
-    'presenter',
-    ['year', 'name', 'gender', 'date_of_birth'],
-    req.body
-  );
+  const query = insertQuery({
+    table: 'presenter',
+    validInserts: ['year', 'name', 'gender', 'date_of_birth'],
+    data: req.body,
+  });
 
   const [result] = await db.query(query);
 
@@ -61,12 +61,12 @@ const updatePresenter = catchAsync(async (req, res, next) => {
   // Format name parameter
   name = name.replace('_', ' ');
 
-  const query = updateQuery(
-    'presenter',
-    ['year', 'name', 'gender', 'date_of_birth'],
-    req.body,
-    `year = ${year} AND name = '${name}'`
-  );
+  const query = updateQuery({
+    table: 'presenter',
+    validUpdates: ['year', 'name', 'gender', 'date_of_birth'],
+    data: req.body,
+    condition: `year = ${year} AND name = '${name}'`,
+  });
 
   const [result] = await db.query(query);
 

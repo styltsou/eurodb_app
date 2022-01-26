@@ -51,11 +51,11 @@ const addPerformer = catchAsync(async (req, res, next) => {
 
   validateGender(gender);
 
-  const query = insertQuery(
-    'performer',
-    ['perf_name', 'num_of_members', 'date_of_birth', 'gender'],
-    req.body
-  );
+  const query = insertQuery({
+    table: 'performer',
+    validInserts: ['perf_name', 'num_of_members', 'date_of_birth', 'gender'],
+    data: req.body,
+  });
 
   const [result] = await db.query(query);
 
@@ -71,12 +71,12 @@ const updatePerformer = catchAsync(async (req, res, next) => {
   const { gender } = req.body;
   validateGender(gender);
 
-  const query = updateQuery(
-    'performer',
-    ['perf_name', 'num_of_members', 'date_of_birth', 'gender'],
-    req.body,
-    `perf_id = ${id}`
-  );
+  const query = updateQuery({
+    table: 'performer',
+    validUpdates: ['perf_name', 'num_of_members', 'date_of_birth', 'gender'],
+    data: req.body,
+    condition: `perf_id = ${id}`,
+  });
 
   const [result] = await db.query(query);
 

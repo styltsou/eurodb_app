@@ -3,11 +3,11 @@ const catchAsync = require('../utils/catchAsync');
 const { insertQuery, updateQuery } = require('../db/queryFactory');
 
 const addContest = catchAsync(async (req, res, next) => {
-  const query = insertQuery(
-    'contest',
-    ['year', 'org_country', 'tv_viewing'],
-    req.body
-  );
+  const query = insertQuery({
+    table: 'contest',
+    validInserts: ['year', 'org_country', 'tv_viewing'],
+    data: req.body,
+  });
 
   const [result] = await db.query(query);
 
@@ -58,12 +58,12 @@ const getContest = catchAsync(async (req, res) => {
 const updateContest = catchAsync(async (req, res, next) => {
   const year = req.params.year;
 
-  const query = updateQuery(
-    'contest',
-    ['year', 'org_country', 'tv_viewing'],
-    req.body,
-    `year = ${year}`
-  );
+  const query = updateQuery({
+    table: 'contest',
+    validUpdates: ['year', 'org_country', 'tv_viewing'],
+    data: req.body,
+    condition: `year = ${year}`,
+  });
 
   const [result] = await db.query(query);
 

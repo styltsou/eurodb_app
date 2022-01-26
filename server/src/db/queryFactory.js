@@ -1,6 +1,5 @@
-const insertQuery = (tableName, validInserts, dataObj) => {
-  // maybe throw error instead
-  Object.keys(dataObj).forEach(key => {
+const insertQuery = ({ table, validInserts, data }) => {
+  Object.keys(data).forEach(key => {
     if (!validInserts.includes(key)) {
       throw new Error(`'${key}' is not a valid field`);
     }
@@ -9,22 +8,21 @@ const insertQuery = (tableName, validInserts, dataObj) => {
   let insertFields = '';
   let values = '';
 
-  Object.keys(dataObj).forEach(key => {
+  Object.keys(data).forEach(key => {
     insertFields += `${key}, `;
 
-    if (typeof dataObj[key] === 'string' || dataObj[key] instanceof String)
-      values += `'${dataObj[key]}', `;
-    else values += `${dataObj[key]}, `;
+    if (typeof data[key] === 'string' || data[key] instanceof String)
+      values += `'${data[key]}', `;
+    else values += `${data[key]}, `;
   });
 
   insertFields = insertFields.slice(0, -2);
   values = values.slice(0, -2);
 
-  return `INSERT INTO ${tableName} (${insertFields}) VALUES (${values})`;
+  return `INSERT INTO ${table} (${insertFields}) VALUES (${values})`;
 };
 
-const updateQuery = (tableName, validUpdates, newDataObj, conditionClause) => {
-  // Should I add an error as a response instead?
+const updateQuery = (table, validUpdates, data, condition) => {
   Object.keys(newDataObj).forEach(key => {
     if (!validUpdates.includes(key)) {
       throw new Error(`'${key}' is not a valid field`);
@@ -34,19 +32,16 @@ const updateQuery = (tableName, validUpdates, newDataObj, conditionClause) => {
   // Create update pairs here
   let updatePairs = '';
 
-  Object.keys(newDataObj).forEach(key => {
-    if (
-      typeof newDataObj[key] === 'string' ||
-      newDataObj[key] instanceof String
-    )
-      updatePairs += `${key} = '${newDataObj[key]}', `;
-    else updatePairs += `${key} = ${newDataObj[key]}, `;
+  Object.keys(data).forEach(key => {
+    if (typeof data[key] === 'string' || data[key] instanceof String)
+      updatePairs += `${key} = '${data[key]}', `;
+    else updatePairs += `${key} = ${data[key]}, `;
   });
 
-  // Remove the extra comma and space at the end orf the string
+  // Remove the extra comma and space at the end of the string
   updatePairs = updatePairs.slice(0, -2);
 
-  return `UPDATE ${tableName} SET ${updatePairs} WHERE ${conditionClause}`;
+  return `UPDATE ${table} SET ${updatePairs} WHERE ${condition}`;
 };
 
 module.exports = {
