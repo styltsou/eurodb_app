@@ -20,22 +20,20 @@ const getAllJurors = catchAsync(async (req, res, next) => {
 const getJurorsByYear = catchAsync(async (req, res, next) => {
   const year = req.params.year;
 
-  const idsQuery = `SELECT Juror_juror_id as id FROM contest_has_juror WHERE Contest_year = ${year}`;
-  let [ids] = await db.query(idsQuery);
-
-  if (ids) ids = ids.map(el => el['id']);
-  else throw new Error('Resource not found');
-
-  let jurorsQuery = `SELECT * FROM juror WHERE juror_id in (${ids.join(',')})`;
+  const query = `
+    SELECT juror_id, juror_name, gender, date_of_birth, country_name
+    FROM juror JOIN contest_has_juror
+    ON juror.juror_id=contest_has_juror.Juror_juror_id WHERE Contest_year = ${year}
+  `;
 
   // Filter by country option
   let { country } = req.query;
   if (country !== undefined) {
     country = country.replace('_', ' ');
-    jurorsQuery += ` AND country_name = '${country}'`;
+    query += ` AND country_name = '${country}'`;
   }
 
-  const [jurors] = await db.query(jurorsQuery);
+  const [jurors] = await db.query(query);
 
   res.status(200).json({
     status: 'success',
