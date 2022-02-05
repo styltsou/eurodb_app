@@ -35,6 +35,8 @@ const getJurorsByYear = catchAsync(async (req, res, next) => {
 
   const [jurors] = await db.query(query);
 
+  // TODO: Add check to see if requested data exist
+
   res.status(200).json({
     status: 'success',
     results: jurors.length,
