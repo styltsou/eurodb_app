@@ -61,23 +61,23 @@ const getJurorsByCountry = catchAsync(async (req, res, next) => {
 const getJuror = catchAsync(async (req, res, next) => {
   const id = req.params.id;
 
-  const query = `SELECT * FROM juror WHERE juror_id = ${id}`;
-  const [juror] = await db.query(query);
+  const query = `SELECT * FROM juror join contest_has_juror
+   on contest_has_juror.Juror_juror_id=juror.juror_id WHERE juror_id = ${id}`;
 
-  const yearsQuery = `SELECT Contest_year as year FROM contest_has_juror WHERE Juror_juror_id = ${id}`;
-  let [years] = await db.query(yearsQuery);
+  let [juror] = await db.query(query);
 
-  // Create an array containing the years as single values
-  if (years) {
-    years = years.map(el => el['year']);
-  }
-
-  if (juror[0] === undefined) throw new Error('Resource not found');
+  // The quey returns multiple rows with the juror data
+  // Each row differentiates on the Contest_year column
+  let years = [];
+  juror.forEach(row => years.push(row.Contest_year));
+  juror = juror[0];
+  delete juror['Juror_juror_id'];
+  delete juror['Contest_year'];
 
   res.status(200).json({
     status: 'success',
     data: {
-      ...juror[0],
+      ...juror,
       years,
     },
   });
